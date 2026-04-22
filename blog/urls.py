@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 
 app_name = 'blog'
@@ -7,6 +7,8 @@ urlpatterns = [
     # представления поста
     path('', views.post_list, name='post_list'),
     # path('', views.PostListView.as_view(), name='post_list'),
+
+    path('search/', views.post_search, name='post_search'),
 
     path('tag/<slug:tag_slug>/',
          views.post_list,
@@ -21,5 +23,6 @@ urlpatterns = [
 
     path('<int:post_id>/comment/',
          views.post_comment, name='post_comment'),
+
 
 ]

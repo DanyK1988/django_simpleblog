@@ -16,7 +16,7 @@ import os
 import ssl
 import certifi
 
-
+load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -35,6 +35,8 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+SITE_ID = 1
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -44,6 +46,10 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "blog.apps.BlogConfig",
     'taggit',
+    'django.contrib.sites',
+    'django.contrib.sitemaps',
+    'django.contrib.postgres',
+    'accounts.apps.AccountsConfig',
 ]
 
 MIDDLEWARE = [
@@ -81,8 +87,12 @@ WSGI_APPLICATION = "mysite.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": 'blog',
+        "USER": 'blog',
+        "PASSWORD": f'{os.getenv("DATABASE_PASSWORD")}',
+        "HOST": '127.0.0.1',
+        "PORT": '5432',
     }
 }
 
@@ -117,13 +127,15 @@ USE_I18N = True
 
 USE_TZ = True
 
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 30
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = "static/"
 
-load_dotenv()
+
 
 ssl._create_default_https_context = ssl.create_default_context
 os.environ['SSL_CERT_FILE'] = certifi.where()
@@ -142,3 +154,9 @@ SERVER_EMAIL = EMAIL_HOST_USER
 
 EMAIL_SSL_CERTFILE = None
 EMAIL_SSL_KEYFILE = None
+
+LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = '/accounts/login'
+
+MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = 'media/'
