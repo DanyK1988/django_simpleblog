@@ -3,19 +3,59 @@
 {% block title %}Share a post{% endblock %}
 
 {% block content %}
-    {% if sent %}
-        <h1>E-mail successfully sent</h1>
-        <p>
-            "{{ post.title }}" was successfully sent
-            to {{ form.cleaned_data.to }}.
-        </p>
-    {% else %}
-        <h1>Share "{{ post.title}}" by e-mail</h1>
-        <form method="post">
-            {{ form.as_p }}
-            {% csrf_token %}
-            <input type="submit" value="Send e-mail">
-        </form>
-    {% endif %}
-    <p><a href="{{ post.get_absolute_url }}">Back to the post</a></p>
+
+{% if sent %}
+    <h1>E-mail successfully sent</h1>
+    <p>
+        "{{ post.title }}" was successfully sent to {{ form.cleaned_data.to }}.
+    </p>
+{% else %}
+    <h1>Share "{{ post.title }}" by e-mail</h1>
+
+    <form method="post" novalidate>
+        {% csrf_token %}
+
+        <div class="mb-2">
+            {{ form.name }}
+            {% if form.name.errors %}
+                <div class="text-danger">
+                    {{ form.name.errors }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="mb-2">
+            {{ form.email }}
+            {% if form.email.errors %}
+                <div class="text-danger">
+                    {{ form.email.errors }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="mb-2">
+            {{ form.to }}
+            {% if form.to.errors %}
+                <div class="text-danger">
+                    {{ form.to.errors }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="mb-2">
+            {{ form.comments }}
+            {% if form.comments.errors %}
+                <div class="text-danger">
+                    {{ form.comments.errors }}
+                </div>
+            {% endif %}
+        </div>
+
+        <input type="submit" value="Send e-mail" class="btn btn-primary mb-3">
+    </form>
+
+{% endif %}
+
+<p><a href="{{ post.get_absolute_url }}">Back to the post</a></p>
+
 {% endblock %}

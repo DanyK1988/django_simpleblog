@@ -33,4 +33,6 @@ urlpatterns = [
          name='django.contrib.sitemaps.views.sitemap'),
     path('accounts/', include('accounts.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('oauth/', include('social_django.urls', namespace='social')),
+    path('api/', include('blog_api.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
